@@ -21,3 +21,17 @@ module fip_32_adder(
     
 endmodule
 
+module fip_32_mult(
+    input signed [31:0] x, 
+    input signed [31:0] y,
+    output signed [31:0] prod
+);
+    logic signed [63:0] temp;
+
+    always_comb begin
+        temp = x * y;
+        prod = temp >> 16;
+    end
+
+
+endmodule
