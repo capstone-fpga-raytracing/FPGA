@@ -7,8 +7,10 @@ module fip_32_adder(
     parameter integer_bits = 16;
     parameter fractional_bits = 16;
     
-    always @(*)
-    begin
+    reg signed [31:0] max_value = (2**(integer_bits-1) - 2**(-fractional_bits));
+    reg signed [31:0] min_value = -(2**(integer_bits-1));
+
+    always @(*) begin
         sum = x + y
 
         if (result > max_value || result < min_value)
