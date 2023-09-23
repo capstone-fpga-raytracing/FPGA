@@ -33,5 +33,23 @@ module fip_32_mult(
         prod = temp >> 16;
     end
 
+endmodule
+
+module fip_32_div(
+    input signed [31:0] dividend,
+    input signed [31:0] divisor,
+    output signed [31:0] quotient,
+    output reg overflow,
+    output reg underflow
+);
+    signed logic [47:0] temp_dividend;
+    assign temp_dividend = divided << 16;
+    always_comb begin
+        if(divisor == 32'b0)
+            quotient = 32'b0;
+        else begin
+            quotient = temp_dividend / divisor;
+        end
+    end
 
 endmodule
