@@ -13,7 +13,30 @@ module fip_32_adder(
     always @(*) begin
         sum = x + y
 
-        if (result > max_value || result < min_value)
+        if (sum > max_value || sum < min_value)
+            overflow = 1'b1;
+        else
+            overflow = 1'b0;
+    end
+    
+endmodule
+
+module fip_32_sub(
+    input signed [31:0] x,
+    input signed [31:0] y,
+    output reg signed [31:0] diff,
+    output reg overflow
+);
+    parameter integer_bits = 16;
+    parameter fractional_bits = 16;
+    
+    reg signed [31:0] max_value = (2**(integer_bits-1) - 2**(-fractional_bits));
+    reg signed [31:0] min_value = -(2**(integer_bits-1));
+
+    always @(*) begin
+        diff = x + y
+
+        if (diff > max_value || diff < min_value)
             overflow = 1'b1;
         else
             overflow = 1'b0;
