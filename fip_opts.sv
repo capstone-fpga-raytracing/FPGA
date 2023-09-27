@@ -11,7 +11,7 @@ module fip_32_adder(
     parameter MIN_VALUE = -(2**(integer_bits-1)) << fractional_bits;
 
     always_comb begin
-        overflow = 0 // Initialization
+        overflow = 0; // Initialization
 
         sum = x + y;
 
@@ -36,7 +36,7 @@ module fip_32_sub(
     parameter MIN_VALUE = -(2**(integer_bits-1)) << fractional_bits;
 
     always_comb begin
-        overflow = 0 // Initialization
+        overflow = 0; // Initialization
 
         diff = x - y;
 
@@ -57,7 +57,7 @@ module fip_32_mult(
     logic signed [63:0] temp, adjusted;
 
     always_comb begin
-        overflow = 0 // Initialization
+        overflow = 0; // Initialization
 
         temp = x * y;
         adjusted = temp >>> 16;
@@ -69,8 +69,9 @@ module fip_32_mult(
             overflow = ~|adjusted[63:32]; // NOR: If any bit is 0, when it should be 1, overflow detected
         end
 
-        prod = adjusted[31:0];
+        
     end
+    assign prod = adjusted[31:0];
 
 endmodule
 
@@ -81,18 +82,19 @@ module fip_32_div(
     output reg overflow,
     output reg underflow
 );
-    signed logic [47:0] temp_dividend;
+    logic signed [47:0] temp_dividend;
+    logic signed [31:0] res;
     assign temp_dividend = dividend << 16;
     always_comb begin
-        overflow = 0 // Initialization
-        underflow = 0 // Initialization
+        overflow = 0; // Initialization
+        underflow = 0; // Initialization
         if(divisor == 32'b0) begin
-            quotient = 32'b0;
+            res = 32'b0;
             underflow = 1'b1; // Div by 0 error indicated by 1'b1 in underflow signal
         end else begin
-            quotient = temp_dividend / divisor;
+            res = temp_dividend / divisor;
             // Add overflow/underflow detection 
         end
     end
-
+    assign quotient = res;
 endmodule
