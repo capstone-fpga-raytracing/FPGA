@@ -50,9 +50,9 @@ module fip_32_sub(
         else
             overflow = 1'b0;
         
-        if ((x > 0) && (y > 0) && (sum <= 0)) 
+        if ((x > 0) && (y > 0) && (diff <= 0)) 
             overflow = 1'b1; // Overflow occurred: Positive + Positive = Negative
-        else if ((x < 0) && (y < 0) && (sum >= 0)) 
+        else if ((x < 0) && (y < 0) && (diff >= 0)) 
             overflow = 1'b1; // Overflow occurred: Negative + Negative = Positive
     end
     
