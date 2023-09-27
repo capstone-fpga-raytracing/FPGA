@@ -142,18 +142,25 @@ module tb_fip_32_div();
     reg signed [31:0] x, y;
     wire signed [31:0] prod;
     wire overflow;
+    wire underflow;
 
     // Instantiate the multiplier module
-    fip_32_mult mult_inst (
-        .x(x),
-        .y(y),
-        .prod(prod),
-        .overflow(overflow)
+    fip_32_div div_inst (
+        .dividend(x),
+        .divisor(y),
+        .quotient(prod),
+        .overflow(overflow),
+        .underflow(underflow)
     );
 
 	initial begin
-	
+        // Test 1: Division of integer numbers without overflow
+        x = 2 << INT_SHIFT; // 2.0 in Q16.16     
+        y = 2 << INT_SHIFT; // 2.0 in Q16.16 
+        #10;
+        // Expected: quotient = 1.0 in Q16.16 (65536) with no overflow
 
-		$stop
+
+		$stop;
 	end
 endmodule
