@@ -135,6 +135,25 @@ module tb_fip_32_mult();
 
 endmodule
 
+module tb_fip_32_div();
 
+    parameter INT_SHIFT = 16; // For Q16.16 fixed-point format
 
+    reg signed [31:0] x, y;
+    wire signed [31:0] prod;
+    wire overflow;
 
+    // Instantiate the multiplier module
+    fip_32_mult mult_inst (
+        .x(x),
+        .y(y),
+        .prod(prod),
+        .overflow(overflow)
+    );
+
+	initial begin
+	
+
+		$stop
+	end
+endmodule
