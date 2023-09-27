@@ -6,7 +6,7 @@ module fip_32_adder(
 );
     parameter integer_bits = 16;
     parameter fractional_bits = 16;
-    
+
     parameter MAX_VALUE = (2**(integer_bits-1) - 1) << fractional_bits;
     parameter MIN_VALUE = -(2**(integer_bits-1)) << fractional_bits;
 
@@ -19,6 +19,11 @@ module fip_32_adder(
             overflow = 1'b1;
         else
             overflow = 1'b0;
+
+        if ((x > 0) && (y > 0) && (sum <= 0)) 
+            overflow = 1'b1; // Overflow occurred: Positive + Positive = Negative
+        else if ((x < 0) && (y < 0) && (sum >= 0)) 
+            overflow = 1'b1; // Overflow occurred: Negative + Negative = Positive
     end
     
 endmodule
@@ -44,6 +49,11 @@ module fip_32_sub(
             overflow = 1'b1;
         else
             overflow = 1'b0;
+        
+        if ((x > 0) && (y > 0) && (sum <= 0)) 
+            overflow = 1'b1; // Overflow occurred: Positive + Positive = Negative
+        else if ((x < 0) && (y < 0) && (sum >= 0)) 
+            overflow = 1'b1; // Overflow occurred: Negative + Negative = Positive
     end
     
 endmodule

@@ -16,7 +16,7 @@ module tb_fip_32_adder();
         x = 32'b0000000000000001_0000000000000000;
         y = 32'b0000000000000001_0000000000000000;
         #10; // delay
-        // Expected: sum = 16'h0003 << 16, overflow = 0
+        // Expected: sum = 16'b10 << 16, overflow = 0
 
         // Test 2
         x = 32'h7FFFFFFF;
