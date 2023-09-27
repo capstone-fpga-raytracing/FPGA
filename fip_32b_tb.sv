@@ -71,4 +71,70 @@ module tb_fip_32_sub();
 
 endmodule
 
+module tb_fip_32_mult();
+
+    parameter INT_SHIFT = 16; // For Q16.16 fixed-point format
+
+    reg signed [31:0] x, y;
+    wire signed [31:0] prod;
+    wire overflow;
+
+    // Instantiate the multiplier module
+    fip_32_mult mult_inst (
+        .x(x),
+        .y(y),
+        .prod(prod),
+        .overflow(overflow)
+    );
+
+    initial begin
+        // Test 1: Simple multiplication without overflow
+        x = 1 << INT_SHIFT; // 1.0 in Q16.16 (0x00010000 or 65536 as signed integer)
+        y = 1 << INT_SHIFT; // 1.0 in Q16.16 (0x00010000 or 65536 as signed integer)
+        #10;
+        // Expected: prod = 1.0 in Q16.16 (0x00010000 or 65536 as signed integer), overflow = 0
+
+        // Test 2: Multiplication that results in overflow
+        x = 32'h40000000;    // Large positive value in Q16.16 (1073741824 as signed integer)
+        y = 4 << INT_SHIFT;  // 4.0 in Q16.16 (0x00040000 or 262144 as signed integer)
+        #10;
+        // Expected: overflow = 1 (because it should result in a value that exceeds the maximum positive 32-bit integer)
+
+        // Test 3: Multiplication with a negative value 
+        x = 32'hC0000000;    // Large negative value in Q16.16 (-1073741824 as signed integer)
+        y = -4 << INT_SHIFT; // -4.0 in Q16.16 (0xFFFC0000 or -262144 as signed integer)
+        #10;
+        // Expected: overflow = 1 (because it should result in a value that exceeds the maximum positive 32-bit integer)
+
+        // Test 4: Edge case, multiplication by zero
+        x = 1 << INT_SHIFT; // 1.0 in Q16.16 (0x00010000 or 65536 as signed integer)
+        y = 0; // 0 in Q16.16
+        #10;
+        // Expected: prod = 0 in Q16.16, overflow = 0
+
+        // Test 5: Fractional multiplication without overflow
+        x = 32'h00008000; // 0.5 in Q16.16 (32768 as signed integer)
+        y = 32'h00008000; // 0.5 in Q16.16 (32768 as signed integer)
+        #10;
+        // Expected: prod = 0.25 in Q16.16 (0x00004000 or 16384 as signed integer), overflow = 0
+
+        // Test 6: Fractional multiplication with one negative operand
+        x = 32'hFFFF8000; // -0.5 in Q16.16 (-32768 as signed integer)
+        y = 32'h00008000; // 0.5 in Q16.16 (32768 as signed integer)
+        #10;
+        // Expected: prod = -0.25 in Q16.16 (0xFFFFC000 or -16384 as signed integer), overflow = 0
+
+        // Test 7: Small fractional multiplication without overflow
+        x = 32'h00000001; // Very small positive fraction in Q16.16 (1 as signed integer)
+        y = 32'h00000001; // Very small positive fraction in Q16.16 (1 as signed integer)
+        #10;
+        // Expected: prod is a very small positive fraction in Q16.16 (0x00000000 or 0 as signed integer), overflow = 0
+
+        $stop; 
+    end
+
+endmodule
+
+
+
 
