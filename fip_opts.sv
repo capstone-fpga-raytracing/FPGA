@@ -7,8 +7,9 @@ module fip_32_adder(
     parameter integer_bits = 16;
     parameter fractional_bits = 16;
 
-    parameter MAX_VALUE = (2**(integer_bits-1) - 1) << fractional_bits;
-    parameter MIN_VALUE = -(2**(integer_bits-1)) << fractional_bits;
+    parameter MAX_VALUE = (2**(integer_bits-1) - 1) << fractional_bits; // 32'h7FFFFFFF
+    parameter MIN_VALUE = -(2**(integer_bits-1)) << fractional_bits; // 32'h80000000
+
 
     always_comb begin
         overflow = 0; // Initialization
@@ -36,7 +37,7 @@ module fip_32_sub(
 );
     parameter integer_bits = 16;
     parameter fractional_bits = 16;
-    
+
     parameter MAX_VALUE = (2**(integer_bits-1) - 1) << fractional_bits;
     parameter MIN_VALUE = -(2**(integer_bits-1)) << fractional_bits;
 
@@ -92,19 +93,32 @@ module fip_32_div(
     output reg overflow,
     output reg underflow
 );
+
+    parameter integer_bits = 16;
+    parameter fractional_bits = 16;
+
+    parameter MAX_VALUE = (2**(integer_bits-1) - 1) << fractional_bits;
+    parameter MIN_VALUE = -(2**(integer_bits-1)) << fractional_bits;
+
     logic signed [47:0] temp_dividend;
-    logic signed [31:0] res;
+    logic signed [47:0] res;
     assign temp_dividend = dividend << 16;
     always_comb begin
         overflow = 0; // Initialization
         underflow = 0; // Initialization
         if(divisor == 32'b0) begin
-            res = 32'b0;
+            res = 0;
             underflow = 1'b1; // Div by 0 error indicated by 1'b1 in underflow signal
         end else begin
             res = temp_dividend / divisor;
-            // Add overflow/underflow detection 
+            if(res >= MAX_VALUE || res <= MIN_VALUE) begin
+                overflow = 1'b1;
+            end 
+            else if (res[31] == 1 && (dividend[31] == divisor[31])) begin // Negative result when signs of input are same
+                overflow = 1'b1;
+            end
         end
     end
-    assign quotient = res;
+    assign quotient = res[31:0];
+
 endmodule

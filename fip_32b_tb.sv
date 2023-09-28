@@ -144,7 +144,7 @@ module tb_fip_32_div();
     wire overflow;
     wire underflow;
 
-    // Instantiate the multiplier module
+    // Instantiate the division module
     fip_32_div div_inst (
         .dividend(x),
         .divisor(y),
@@ -153,14 +153,44 @@ module tb_fip_32_div();
         .underflow(underflow)
     );
 
-	initial begin
+    initial begin
         // Test 1: Division of integer numbers without overflow
-        x = 2 << INT_SHIFT; // 2.0 in Q16.16     
-        y = 2 << INT_SHIFT; // 2.0 in Q16.16 
+        x = 2 << INT_SHIFT; // 2.0 in Q16.16 (131072)    
+        y = 2 << INT_SHIFT; // 2.0 in Q16.16 (131072)
         #10;
         // Expected: quotient = 1.0 in Q16.16 (65536) with no overflow
 
+        // Test 2: Division by 0, underflow set
+        x = 1 << INT_SHIFT; // 1.0 in Q16.16 (65536)
+        y = 32'b0; // 0.0
+        #10;
+        // Expected: underflow set due to division by 0 
 
-		$stop;
-	end
+        // Test 3: Division of fractional numbers
+        x = (0.5 * (2**INT_SHIFT)); // 0.5 in Q16.16 (32768)
+        y = (0.25 * (2**INT_SHIFT)); // 0.25 in Q16.16 (16384)
+        #10;
+        // Expected: quotient = 2.0 in Q16.16 (131072) with no overflow
+
+        // Test 4: Division leading to overflow
+        x = 32'h7FFFFFFF; // Close to max positive value of Q16.16
+        y = 1 << (INT_SHIFT - 2); // 0.25 in Q16.16 (16384)
+        #10;
+        // Expected: quotient larger than can be represented, overflow set
+
+        // Test 5: Division of small numbers
+        x = 2;  // 2/65536 in Q16.16 (2)
+        y = 3;  // 3/65536 in Q16.16 (3)
+        #10;
+        // Expected: quotient = 2/3 in Q16.16 (43708) with no underflow/overflow
+        // RESULT: 43690, which is an error of 0.0002746582. Negligible.
+
+        // Test 6: Division with negative numbers
+        x = -1 << INT_SHIFT; // -1.0 in Q16.16 (-65536)
+        y = (0.5 * (2**INT_SHIFT)); // 0.5 in Q16.16 (32768)
+        #10;
+        // Expected: quotient = -2.0 in Q16.16 (-131072) with no overflow
+
+        $stop;
+    end
 endmodule
