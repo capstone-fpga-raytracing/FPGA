@@ -211,9 +211,9 @@ module tb_fip_32_3b3_det();
 
     initial begin
         // Test 1: Determinant of an identity matrix
-        i_array[0] = '{32'h00010000, 32'b0, 32'b0}; // 1, 0, 0 in Q16.16
+        i_array[2] = '{32'h00010000, 32'b0, 32'b0}; // 1, 0, 0 in Q16.16
         i_array[1] = '{32'b0, 32'h00010000, 32'b0}; // 0, 1, 0 in Q16.16
-        i_array[2] = '{32'b0, 32'b0, 32'h00010000}; // 0, 0, 1 in Q16.16
+        i_array[0] = '{32'b0, 32'b0, 32'h00010000}; // 0, 0, 1 in Q16.16
         #10;
         // Expected: o_det = 1 in Q16.16 (65536) with no overflow
 

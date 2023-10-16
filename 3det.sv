@@ -42,9 +42,6 @@ module fip_32_3b3_det(
     fip_32_mult inst_inter1 (.x(a), .y(inter1), .prod(part1), .overflow(of7));
     fip_32_mult inst_inter2 (.x(b), .y(inter2), .prod(part2), .overflow(of8));
     fip_32_mult inst_inter3 (.x(c), .y(inter3), .prod(part3), .overflow(of9));
-    // assign part1 = a * (ei - fh);
-    // assign part2 = b * (fg - di);
-    // assign part3 = c * (dh - eg);
 
     // Sum intermediate determinant components
     assign o_det = part1 + part2 + part3;
