@@ -194,3 +194,50 @@ module tb_fip_32_div();
         $stop;
     end
 endmodule
+
+
+module tb_fip_32_3b3_det();
+
+    reg signed [31:0] i_array[2:0][2:0];
+    wire signed [31:0] o_det;
+    wire overflow;
+
+    // Instantiate the 3x3 determinant module
+    fip_32_3b3_det det_inst (
+        .i_array(i_array),
+        .o_det(o_det),
+        .overflow(overflow)
+    );
+
+    initial begin
+        // Test 1: Determinant of an identity matrix
+        i_array[0] = '{32'h00010000, 32'b0, 32'b0}; // 1, 0, 0 in Q16.16
+        i_array[1] = '{32'b0, 32'h00010000, 32'b0}; // 0, 1, 0 in Q16.16
+        i_array[2] = '{32'b0, 32'b0, 32'h00010000}; // 0, 0, 1 in Q16.16
+        #10;
+        // Expected: o_det = 1 in Q16.16 (65536) with no overflow
+
+        // Test 2: Determinant with random values
+        i_array[0] = '{32'h00010000, 32'h00020000, 32'h00030000}; // 1, 2, 3 in Q16.16
+        i_array[1] = '{32'h00040000, 32'h00050000, 32'h00060000}; // 4, 5, 6 in Q16.16
+        i_array[2] = '{32'h00070000, 32'h00080000, 32'h00090000}; // 7, 8, 9 in Q16.16
+        #10;
+        // Expected: o_det = 0 with no overflow (since the matrix is singular)
+
+        // Test 3: Determinant with some negative values
+        i_array[0] = '{32'h00010000, 32'hFFFF0000, 32'h00030000}; // 1, -1, 3 in Q16.16
+        i_array[1] = '{32'h00040000, 32'h00050000, 32'h00060000}; // 4, 5, 6 in Q16.16
+        i_array[2] = '{32'h00070000, 32'h00080000, 32'h00090000}; // 7, 8, 9 in Q16.16
+        #10;
+        // Expected: o_det = -18 in Q16.16 (-1179648) with no overflow
+
+        // Test 4: Testing overflow condition
+        i_array[0] = '{32'h7FFF0000, 32'h7FFF0000, 32'h7FFF0000}; // Large values in Q16.16
+        i_array[1] = '{32'h7FFF0000, 32'h7FFF0000, 32'h7FFF0000}; // Large values in Q16.16
+        i_array[2] = '{32'h7FFF0000, 32'h7FFF0000, 32'h7FFF0000}; // Large values in Q16.16
+        #10;
+        // Expected: overflow should be detected
+        
+        $stop;
+    end
+endmodule
