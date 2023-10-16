@@ -211,30 +211,62 @@ module tb_fip_32_3b3_det();
 
     initial begin
         // Test 1: Determinant of an identity matrix
-        i_array[2] = '{32'h00010000, 32'b0, 32'b0}; // 1, 0, 0 in Q16.16
-        i_array[1] = '{32'b0, 32'h00010000, 32'b0}; // 0, 1, 0 in Q16.16
-        i_array[0] = '{32'b0, 32'b0, 32'h00010000}; // 0, 0, 1 in Q16.16
+        i_array[0][0] = 32'h00010000; // 1 in Q16.16 (65536)
+        i_array[0][1] = 32'b0;        // 0 (0)
+        i_array[0][2] = 32'b0;        // 0 (0)
+
+        i_array[1][0] = 32'b0;        // 0 (0)
+        i_array[1][1] = 32'h00010000; // 1 in Q16.16 (65536)
+        i_array[1][2] = 32'b0;        // 0 (0)
+
+        i_array[2][0] = 32'b0;        // 0 (0)
+        i_array[2][1] = 32'b0;        // 0 (0)
+        i_array[2][2] = 32'h00010000; // 1 in Q16.16 (65536)
         #10;
         // Expected: o_det = 1 in Q16.16 (65536) with no overflow
 
         // Test 2: Determinant with random values
-        i_array[0] = '{32'h00010000, 32'h00020000, 32'h00030000}; // 1, 2, 3 in Q16.16
-        i_array[1] = '{32'h00040000, 32'h00050000, 32'h00060000}; // 4, 5, 6 in Q16.16
-        i_array[2] = '{32'h00070000, 32'h00080000, 32'h00090000}; // 7, 8, 9 in Q16.16
+        i_array[0][0] = 32'h00010000; // 1 in Q16.16 (65536)
+        i_array[0][1] = 32'h00020000; // 2 in Q16.16 (131072)
+        i_array[0][2] = 32'h00030000; // 3 in Q16.16 (196608)
+
+        i_array[1][0] = 32'h00040000; // 4 in Q16.16 (262144)
+        i_array[1][1] = 32'h00050000; // 5 in Q16.16 (327680)
+        i_array[1][2] = 32'h00060000; // 6 in Q16.16 (393216)
+
+        i_array[2][0] = 32'h00070000; // 7 in Q16.16 (458752)
+        i_array[2][1] = 32'h00080000; // 8 in Q16.16 (524288)
+        i_array[2][2] = 32'h00090000; // 9 in Q16.16 (589824)
         #10;
         // Expected: o_det = 0 with no overflow (since the matrix is singular)
 
         // Test 3: Determinant with some negative values
-        i_array[0] = '{32'h00010000, 32'hFFFF0000, 32'h00030000}; // 1, -1, 3 in Q16.16
-        i_array[1] = '{32'h00040000, 32'h00050000, 32'h00060000}; // 4, 5, 6 in Q16.16
-        i_array[2] = '{32'h00070000, 32'h00080000, 32'h00090000}; // 7, 8, 9 in Q16.16
+        i_array[0][0] = 32'h00010000; // 1 in Q16.16 (65536)
+        i_array[0][1] = 32'hFFFF0000; // -1 in Q16.16 (-65536)
+        i_array[0][2] = 32'h00030000; // 3 in Q16.16 (196608)
+
+        i_array[1][0] = 32'h00040000; // 4 in Q16.16 (262144)
+        i_array[1][1] = 32'h00050000; // 5 in Q16.16 (327680)
+        i_array[1][2] = 32'h00060000; // 6 in Q16.16 (393216)
+
+        i_array[2][0] = 32'h00070000; // 7 in Q16.16 (458752)
+        i_array[2][1] = 32'h00080000; // 8 in Q16.16 (524288)
+        i_array[2][2] = 32'h00090000; // 9 in Q16.16 (589824)
         #10;
         // Expected: o_det = -18 in Q16.16 (-1179648) with no overflow
 
         // Test 4: Testing overflow condition
-        i_array[0] = '{32'h7FFF0000, 32'h7FFF0000, 32'h7FFF0000}; // Large values in Q16.16
-        i_array[1] = '{32'h7FFF0000, 32'h7FFF0000, 32'h7FFF0000}; // Large values in Q16.16
-        i_array[2] = '{32'h7FFF0000, 32'h7FFF0000, 32'h7FFF0000}; // Large values in Q16.16
+        i_array[0][0] = 32'h7FFF0000; // Large values in Q16.16 (2147418112)
+        i_array[0][1] = 32'h7FFF0000; // Large values in Q16.16 (2147418112)
+        i_array[0][2] = 32'h7FFF0000; // Large values in Q16.16 (2147418112)
+
+        i_array[1][0] = 32'h7FFF0000; // Large values in Q16.16 (2147418112)
+        i_array[1][1] = 32'h7FFF0000; // Large values in Q16.16 (2147418112)
+        i_array[1][2] = 32'h7FFF0000; // Large values in Q16.16 (2147418112)
+
+        i_array[2][0] = 32'h7FFF0000; // Large values in Q16.16 (2147418112)
+        i_array[2][1] = 32'h7FFF0000; // Large values in Q16.16 (2147418112)
+        i_array[2][2] = 32'h7FFF0000; // Large values in Q16.16 (2147418112)
         #10;
         // Expected: overflow should be detected
         
