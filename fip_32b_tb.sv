@@ -200,8 +200,8 @@ module tb_fip_32_3b3_det();
 
     reg signed [31:0] i_array[2:0][2:0];
     wire signed [31:0] o_det;
-    wire overflow;
-
+    logic overflow;
+    
     // Instantiate the 3x3 determinant module
     fip_32_3b3_det det_inst (
         .i_array(i_array),
