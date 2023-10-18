@@ -68,7 +68,7 @@ alg:
     always_comb begin
         o_invalid = (of | of_a | of_b | of_t | d_of_a | d_of_b | d_of_t | d_uf_a | d_uf_b | d_uf_t);
         if (a[31] == 0 && b[31] == 0 && a + b <= 2'sd1 && t >= min_t) o_result = 1'b1;
-        else o_result = 1'b1;
+        else o_result = 1'b0;
     end
 
     // TO DO: normal
