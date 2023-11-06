@@ -1,4 +1,4 @@
-module intersect #(
+module tri_intersect #(
     parameter signed min_t = 0 // TO DO: CHANGE
 ) (
     input signed [31:0] i_triangle[2:0][2:0],
