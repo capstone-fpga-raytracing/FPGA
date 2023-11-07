@@ -22,7 +22,7 @@ module intersection_tb();
         #50;
         test_index += 'd1;
         error_flag = 1'b0;
-        $display("Test %0d:", test_index);
+        $display("Test %0d begin", test_index);
         /*
         if (o_normal !== ref_normal) begin
             $display("ERROR (normal): expect %h, get %h", ref_normal, o_normal);
@@ -50,6 +50,7 @@ module intersection_tb();
         if (error_flag) begin
             $stop();
         end
+        $display("Test %0d end\n", test_index);
 
     end
     endtask
