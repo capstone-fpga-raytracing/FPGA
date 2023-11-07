@@ -1,9 +1,9 @@
-module tri_intersect #(
+module intersection #(
     parameter signed min_t = 0 // TO DO: CHANGE
 ) (
     input signed [31:0] i_triangle[2:0][2:0],
     input signed [31:0] i_ray[1:0][2:0], // [1] for origin, [0] for direction
-    //output signed [31:0] o_normal[2:0],
+    //output logic signed [31:0] o_normal[2:0],
     output logic o_invalid, // overflow, div by 0
     output logic o_result // 1 for true, 0 for false
 );
@@ -35,6 +35,7 @@ alg:
     logic signed [31:0] e_c[2:0];
     logic signed [31:0] t1[2:0];
     logic signed [31:0] t2[2:0];
+    logic signed [31:0] _d[2:0];
 
     logic signed [31:0] array[2:0][2:0];
     logic signed [31:0] array_a[2:0][2:0];
@@ -55,15 +56,15 @@ alg:
 
     logic of, of_a, of_b, of_t;
     logic signed [31:0] coef, det_a, det_b, det_t, a, b, t;
-    fip_32_3b3_det det (.i_array(array), .o_det(coef), .overflow(of));
-    fip_32_3b3_det det_a (.i_array(array_a), .o_det(det_a), .overflow(of_a));
-    fip_32_3b3_det det_b (.i_array(array_b), .o_det(det_b), .overflow(of_b));
-    fip_32_3b3_det det_t (.i_array(array_t), .o_det(det_t), .overflow(of_t));
+    fip_32_3b3_det det_inst (.i_array(array), .o_det(coef), .overflow(of));
+    fip_32_3b3_det det_a_inst (.i_array(array_a), .o_det(det_a), .overflow(of_a));
+    fip_32_3b3_det det_b_inst (.i_array(array_b), .o_det(det_b), .overflow(of_b));
+    fip_32_3b3_det det_t_inst (.i_array(array_t), .o_det(det_t), .overflow(of_t));
 
     logic d_of_a, d_of_b, d_of_t, d_uf_a, d_uf_b, d_uf_t;
-    fip_32_div div_a (.dividend(det_a), .divisor(coef), .quotient(a), .overflow(d_of_a), .underflow(d_uf_a));
-    fip_32_div div_b (.dividend(det_b), .divisor(coef), .quotient(b), .overflow(d_of_b), .underflow(d_uf_b));
-    fip_32_div div_t (.dividend(det_t), .divisor(coef), .quotient(t), .overflow(d_of_t), .underflow(d_uf_t));
+    fip_32_div div_a_inst (.dividend(det_a), .divisor(coef), .quotient(a), .overflow(d_of_a), .underflow(d_uf_a));
+    fip_32_div div_b_inst (.dividend(det_b), .divisor(coef), .quotient(b), .overflow(d_of_b), .underflow(d_uf_b));
+    fip_32_div div_t_inst (.dividend(det_t), .divisor(coef), .quotient(t), .overflow(d_of_t), .underflow(d_uf_t));
 
     always_comb begin
         o_invalid = (of | of_a | of_b | of_t | d_of_a | d_of_b | d_of_t | d_uf_a | d_uf_b | d_uf_t);
