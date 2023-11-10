@@ -5,24 +5,33 @@ vlib work
 
 # compile required verilog modules to working dir
 # source files
-vlog ../*.sv
+# vlog ../*.sv
+vlog ../fip_opts.sv
+vlog ../intersection.sv
+
 
 # testbenches
-# vlog fip_32b_tb.sv
-# vlog intersection_tb.sv
-vlog *.sv
+# vlog *.sv
+vlog fip_32b_tb.sv
+vlog intersection_tb.sv
 
 
-#load simulation using the top level simulation module
+# load simulation using the top level simulation module
+# === CHANGE HERE ===
+
 # vsim tb_fip_32_adder
 # vsim tb_fip_32_sub
 # vsim tb_fip_32_mult
 # vsim tb_fip_32_div
-# vsim tb_fip_32_3b3_det
-vsim intersection_tb
+vsim tb_fip_32_3b3_det
+# vsim fip_32_vector_cross_tb
+# vsim fip_32_vector_normal_tb
+
+# vsim intersection_tb
 
 
-#log all signals
+
+# log all signals
 log {/*}
 
 # add all items in top level simulation module

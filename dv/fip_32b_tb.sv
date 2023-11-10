@@ -195,15 +195,14 @@ module tb_fip_32_div();
     end
 endmodule
 
-
 module tb_fip_32_3b3_det();
 
-    reg signed [31:0] i_array[2:0][2:0];
+    reg signed [0:2][0:2][31:0] i_array;
     wire signed [31:0] o_det;
     logic overflow;
     
     // Instantiate the 3x3 determinant module
-    fip_32_3b3_det det_inst (
+    fip_32_3b3_det fip_32_3b3_det_inst (
         .i_array(i_array),
         .o_det(o_det),
         .overflow(overflow)
@@ -273,3 +272,41 @@ module tb_fip_32_3b3_det();
         $stop;
     end
 endmodule
+
+module fip_32_vector_cross_tb();
+
+    logic signed [0:1][0:2][31:0] i_array;
+    logic signed [0:2][31:0] o_product;
+    logic overflow;
+    
+    // Instantiate the 3d vector cross product module
+    fip_32_vector_cross fip_32_vector_cross_inst (
+        .i_array(i_array),
+        .o_product(o_product),
+        .o_overflow(overflow)
+    );
+
+    initial begin
+        // TO DO: add test cases here
+    end
+
+endmodule: fip_32_vector_cross_tb
+
+module fip_32_vector_normal_tb();
+
+    logic signed [0:2][31:0] i_vector;
+    logic signed [0:2][31:0] o_vector;
+    logic invalid;
+    
+    // Instantiate the 3d vector normal module
+    fip_32_vector_normal fip_32_vector_normal_inst (
+        .i_vector(i_vector),
+        .o_vector(o_vector),
+        .o_invalid(invalid)
+    );
+
+    initial begin
+        // TO DO: add test cases here
+    end
+
+endmodule: fip_32_vector_normal_tb
