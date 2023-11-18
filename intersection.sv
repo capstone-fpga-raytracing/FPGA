@@ -72,7 +72,7 @@ module intersection #(
     always_comb begin
         o_invalid = (of1 | of2 | of3 | of4 | of5 | of6 | of7 | of8 | of9 | of10 | of11 | of_c | of_a | of_b |
                      of_t | d_of_a | d_of_b | d_of_t | d_uf_a | d_uf_b | d_uf_t | of_cross | n_invalid | of_anb);
-        if (a[31] == 0 && b[31] == 0 && anb <= 2'sd1 && t >= min_t) begin
+        if (a[31] == 0 && b[31] == 0 && anb <= 32'sh00010000 && t >= min_t) begin
             o_result = 1'b1;
             o_normal = normal;
         end else begin
