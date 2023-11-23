@@ -32,9 +32,9 @@ module intersection #(
     logic signed [0:2][31:0] _d;
 
     logic of0, of1, of2, of3, of4, of5, of6, of7, of8, of9, of10, of11;
-    fip_32_sub sub_e_c_0_inst (.x(i_ray[0][0]), .y(i_triangle[0][0]), .diff(e_t[0]), .overflow(of0));
-    fip_32_sub sub_e_c_1_inst (.x(i_ray[0][1]), .y(i_triangle[0][1]), .diff(e_t[1]), .overflow(of1));
-    fip_32_sub sub_e_c_2_inst (.x(i_ray[0][2]), .y(i_triangle[0][2]), .diff(e_t[2]), .overflow(of2));
+    fip_32_sub sub_e_t_0_inst (.x(i_ray[0][0]), .y(i_triangle[0][0]), .diff(e_t[0]), .overflow(of0));
+    fip_32_sub sub_e_t_1_inst (.x(i_ray[0][1]), .y(i_triangle[0][1]), .diff(e_t[1]), .overflow(of1));
+    fip_32_sub sub_e_t_2_inst (.x(i_ray[0][2]), .y(i_triangle[0][2]), .diff(e_t[2]), .overflow(of2));
     fip_32_sub sub_t1_0_inst (.x(i_triangle[1][0]), .y(i_triangle[0][0]), .diff(t1[0]), .overflow(of3));
     fip_32_sub sub_t1_1_inst (.x(i_triangle[1][1]), .y(i_triangle[0][1]), .diff(t1[1]), .overflow(of4));
     fip_32_sub sub_t1_2_inst (.x(i_triangle[1][2]), .y(i_triangle[0][2]), .diff(t1[2]), .overflow(of5));
@@ -51,7 +51,7 @@ module intersection #(
     fip_32_3b3_det det_c_inst (.i_array('{t1, t2, e_t}), .o_det(coef), .overflow(of_c));
     fip_32_3b3_det det_a_inst (.i_array('{e_t, t2, _d}), .o_det(det_a), .overflow(of_a));
     fip_32_3b3_det det_b_inst (.i_array('{t1, e_t, _d}), .o_det(det_b), .overflow(of_b));
-    fip_32_3b3_det det_t_inst (.i_array('{t1, t2, e_t}), .o_det(det_t), .overflow(of_t));
+    fip_32_3b3_det det_t_inst (.i_array('{t1, t2, _d}), .o_det(det_t), .overflow(of_t));
 
     logic d_of_a, d_of_b, d_of_t, d_uf_a, d_uf_b, d_uf_t;
     fip_32_div div_a_inst (.dividend(det_a), .divisor(coef), .quotient(a), .overflow(d_of_a), .underflow(d_uf_a));
