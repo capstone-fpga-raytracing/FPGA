@@ -84,36 +84,23 @@
 
 int main(void) {
     volatile int * ptr = (int *) SDRAM_BASE;
-    // Copy to 15 memory locations including the base address
-    *ptr = 0xFF; // First 
-    ptr = (int *) SDRAM_BASE + 4; // Move to second location
-    *ptr = 0x55; // Second
-    ptr = (int *) SDRAM_BASE + 8; // Move to third location
-    *ptr = 0xaa; // Third
-    ptr = (int *) SDRAM_BASE + 12; // Move to fourth location
-    *ptr = 0x55; // Fourth
-    ptr = (int *) SDRAM_BASE + 16; // Move to fifth location
-    *ptr = 0xaa; // Fifth
-    ptr = (int *) SDRAM_BASE + 20; // Move to sixth location
-    *ptr = 0x55; // Sixth
-    ptr = (int *) SDRAM_BASE + 24; // Move to seventh location
-    *ptr = 0xaa; // Seventh
-    ptr = (int *) SDRAM_BASE + 28; // Move to eighth location
-    *ptr = 0x55; // Eighth
-    ptr = (int *) SDRAM_BASE + 32; // Move to ninth location
-    *ptr = 0xaa; // Ninth
-    ptr = (int *) SDRAM_BASE + 36; // Move to tenth location
-    *ptr = 0x55; // Tenth
-    ptr = (int *) SDRAM_BASE + 40; // Move to eleventh location
-    *ptr = 0xaa; // Eleventh
-    ptr = (int *) SDRAM_BASE + 44; // Move to twelfth location
-    *ptr = 0x55; // Twelfth
-    ptr = (int *) SDRAM_BASE + 48; // Move to thirteenth location
-    *ptr = 0xaa; // Thirteenth
-    ptr = (int *) SDRAM_BASE + 52; // Move to fourteenth location
-    *ptr = 0x55; // Fourteenth
-    ptr = (int *) SDRAM_BASE + 56; // Move to fifteenth location
-    *ptr = 0xaa; // Fifteenth
-    ptr = (int *) FPGA_SDRAM_TRIGGER; // Set to point to read trigger
-    *ptr = 1; // trigger read
+
+    ptr[0] =  0x12f62211;
+    ptr[1] =  0x34563312;
+    ptr[2] =  0x90194411;
+    ptr[3] =  0x67255511;
+    ptr[4] =  0x6611;
+    ptr[5] =  0x7711;
+    ptr[6] =  0x8811;
+    ptr[7] =  0x9911;
+    ptr[8] =  0xaa11;
+    ptr[9] =  0xbb11;
+    ptr[10] = 0xcc11;
+    ptr[11] = 0xdd11;
+    ptr[12] = 0xee11;
+    ptr[13] = 0xff11;
+    ptr[14] = 0x1100;
+
+    volatile int* tptr = (int *) FPGA_SDRAM_TRIGGER; // Set to point to read trigger
+    *tptr = 1; // trigger read
 }
