@@ -46,18 +46,12 @@ module fip_32_sub(
 
         diff = x - y;
 
+        // General overflow check
         if (diff > MAX_VALUE || diff < MIN_VALUE)
             overflow = 1'b1;
-        else
-            overflow = 1'b0;
-        
-        if ((x > 0) && (y > 0) && (diff <= 0)) 
-            overflow = 1'b1; // Overflow occurred: Positive + Positive = Negative
-        else if ((x < 0) && (y < 0) && (diff >= 0)) 
-            overflow = 1'b1; // Overflow occurred: Negative + Negative = Positive
     end
-    
 endmodule
+
 
 module fip_32_mult(
     input signed [31:0] x, 
