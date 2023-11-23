@@ -62,7 +62,11 @@ module intersection #(
     logic signed [0:2][31:0] cross_product, normal;
     logic of_cross, n_invalid;
     fip_32_vector_cross cross_inst (.i_array('{t1, t2}), .o_product(cross_product), .o_overflow(of_cross));
-    fip_32_vector_normal normal_inst (.i_vector(cross_product), .o_vector(normal), .o_invalid(n_invalid));
+
+    // ignore normalize for now
+    //fip_32_vector_normal normal_inst (.i_vector(cross_product), .o_vector(normal), .o_invalid(n_invalid));
+    assign normal = cross_product;
+    assign n_invalid = 1'b0;
 
     logic signed [31:0] anb;
     logic of_anb;
@@ -77,7 +81,7 @@ module intersection #(
             o_normal = normal;
         end else begin
             o_result = 1'b0;
-            o_normal = 'b0;
+            //o_normal = 'sb0;
         end
     end
 

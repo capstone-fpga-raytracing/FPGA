@@ -56,14 +56,34 @@ module intersection_tb();
         // TO DO: add test cases (with ref results)
 
         // example
-        //i_triangle = ;
-        //i_ray = ;
-        //ref_normal = ;
-        //ref_invalid = ;
-        //ref_result = ;
+        i_triangle[0][0] = 32'h00010000;
+        i_triangle[0][1] = 32'h00010000;
+        i_triangle[0][2] = 32'h00010000;
+
+        i_triangle[1][0] = 32'h00020000;
+        i_triangle[1][1] = 32'h00030000;
+        i_triangle[1][2] = 32'h00020000;
+
+        i_triangle[2][0] = 32'h00010000;
+        i_triangle[2][1] = 32'h00010000;
+        i_triangle[2][2] = 32'h00030000;
+
+        i_ray[0][0] = 32'h00000000;
+        i_ray[0][1] = 32'h00010000;
+        i_ray[0][2] = 32'h00010000;
+
+        i_ray[1][0] = 32'h00030000;
+        i_ray[1][1] = 32'h00001000;
+        i_ray[1][2] = 32'h00011000;
+
+        /*
+        ref_normal = ;
+        ref_invalid = ;
+        ref_result = ;
         test();
+        */
 
-
+        #50
         $display("intersection: test end\n");
     end
 endmodule: intersection_tb

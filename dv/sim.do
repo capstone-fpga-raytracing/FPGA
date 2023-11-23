@@ -23,11 +23,11 @@ vlog intersection_tb.sv
 # vsim tb_fip_32_sub
 # vsim tb_fip_32_mult
 # vsim tb_fip_32_div
-vsim tb_fip_32_3b3_det
+# vsim tb_fip_32_3b3_det
 # vsim fip_32_vector_cross_tb
 # vsim fip_32_vector_normal_tb
 
-# vsim intersection_tb
+vsim intersection_tb
 
 
 
