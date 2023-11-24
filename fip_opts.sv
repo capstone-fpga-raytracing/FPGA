@@ -182,11 +182,11 @@ module fip_32_vector_cross(
     logic signed [31:0] bf, ce, cd, af, ae, bd;
     logic of1, of2, of3, of4, of5, of6, of7, of8, of9;
     fip_32_mult mult_bf_inst (.x(i_array[0][1]), .y(i_array[1][2]), .prod(bf), .overflow(of1));
-    fip_32_mult mult_ce_inst (.x(i_array[0][1]), .y(i_array[1][2]), .prod(ce), .overflow(of2));
-    fip_32_mult mult_cd_inst (.x(i_array[0][1]), .y(i_array[1][2]), .prod(cd), .overflow(of3));
-    fip_32_mult mult_af_inst (.x(i_array[0][1]), .y(i_array[1][2]), .prod(af), .overflow(of4));
-    fip_32_mult mult_ae_inst (.x(i_array[0][1]), .y(i_array[1][2]), .prod(ae), .overflow(of5));
-    fip_32_mult mult_bd_inst (.x(i_array[0][1]), .y(i_array[1][2]), .prod(bd), .overflow(of6));
+    fip_32_mult mult_ce_inst (.x(i_array[0][2]), .y(i_array[1][1]), .prod(ce), .overflow(of2));
+    fip_32_mult mult_cd_inst (.x(i_array[0][2]), .y(i_array[1][0]), .prod(cd), .overflow(of3));
+    fip_32_mult mult_af_inst (.x(i_array[0][0]), .y(i_array[1][2]), .prod(af), .overflow(of4));
+    fip_32_mult mult_ae_inst (.x(i_array[0][0]), .y(i_array[1][1]), .prod(ae), .overflow(of5));
+    fip_32_mult mult_bd_inst (.x(i_array[0][1]), .y(i_array[1][0]), .prod(bd), .overflow(of6));
 
     fip_32_sub sub_inter1_inst (.x(bf), .y(ce), .diff(o_product[0]), .overflow(of7));
     fip_32_sub sub_inter2_inst (.x(cd), .y(af), .diff(o_product[1]), .overflow(of8));
