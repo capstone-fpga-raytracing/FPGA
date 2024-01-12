@@ -76,12 +76,13 @@ module intersection_tb();
         i_ray[1][1] = 32'h00008000;
         i_ray[1][2] = 32'h00018000;
 
-        /*
-        ref_normal = ;
-        ref_invalid = ;
-        ref_result = ;
+        ref_normal[0] = 32'h00040000;
+        ref_normal[1] = 32'hfffe0000;
+        ref_normal[2] = 32'h00000000;
+        ref_invalid = 0;
+        ref_result = 1;
         test();
-        */
+
 
         #50
         $display("intersection: test end\n");
