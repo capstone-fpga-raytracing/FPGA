@@ -6,7 +6,7 @@ module intersection #(
     parameter signed min_t = 0
 ) (
     input i_clk,
-    inout i_rstn,
+    input i_rstn,
     input i_en,
     input signed [0:2][0:2][31:0] i_triangle, // i_triangle[0] for vertex 0
     input signed [0:1][0:2][31:0] i_ray, // i_ray[0] for origin(E), i_ray[1] for direction(D)
@@ -99,7 +99,7 @@ module pl_intersection #(
     parameter signed min_t = 0
 ) (
     input i_clk,
-    inout i_rstn,
+    input i_rstn,
     input i_en,
     input signed [0:2][0:2][31:0] i_triangle, // i_triangle[0] for vertex 0
     input signed [0:1][0:2][31:0] i_ray, // i_ray[0] for origin(E), i_ray[1] for direction(D)
@@ -182,7 +182,7 @@ module dummy_intersection #(
     parameter signed min_t = 0
 ) (
     input i_clk,
-    inout i_rstn,
+    input i_rstn,
     input i_en,
     input signed [0:2][0:2][31:0] i_triangle, // i_triangle[0] for vertex 0
     input signed [0:1][0:2][31:0] i_ray, // i_ray[0] for origin(E), i_ray[1] for direction(D)
