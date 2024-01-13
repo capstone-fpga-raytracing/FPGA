@@ -132,6 +132,11 @@ module fip_32_3b3_det(
     o_det = part1 + part2 + part3
     */
 
+    /*
+    procedure of det:
+    mult -> sub -> mult -> add -> add
+    */
+
     // Intermediate results
     logic signed [31:0] ei, fh, fg, di, dh, eg;    
 
@@ -179,6 +184,11 @@ module fip_32_vector_cross(
     o_product = |bf-ce cd-af ae-bd|
     */
 
+    /*
+    procedure of cross:
+    mult -> sub
+    */
+
     logic signed [31:0] bf, ce, cd, af, ae, bd;
     logic of1, of2, of3, of4, of5, of6, of7, of8, of9;
     fip_32_mult mult_bf_inst (.x(i_array[0][1]), .y(i_array[1][2]), .prod(bf), .overflow(of1));
@@ -201,6 +211,11 @@ module fip_32_vector_normal(
     output logic signed [0:2][31:0] o_vector,
     output logic o_invalid
 );
+
+    /*
+    procedure of normal:
+    mult -> add -> add -> sqrt -> div
+    */
 
     logic signed [31:0] square1, square2, square3;
     logic of1, of2, of3, of4, of5, of6, of7, of8, of9, uf1, uf2, uf3;

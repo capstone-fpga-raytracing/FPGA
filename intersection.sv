@@ -6,7 +6,8 @@ module intersection #(
     parameter signed min_t = 0
 ) (
     input i_clk,
-    inout rst,
+    inout i_rstn,
+    input i_en,
     input signed [0:2][0:2][31:0] i_triangle, // i_triangle[0] for vertex 0
     input signed [0:1][0:2][31:0] i_ray, // i_ray[0] for origin(E), i_ray[1] for direction(D)
     output logic signed [0:2][31:0] o_normal,
@@ -98,7 +99,8 @@ module pl_intersection #(
     parameter signed min_t = 0
 ) (
     input i_clk,
-    inout rst,
+    inout i_rstn,
+    input i_en,
     input signed [0:2][0:2][31:0] i_triangle, // i_triangle[0] for vertex 0
     input signed [0:1][0:2][31:0] i_ray, // i_ray[0] for origin(E), i_ray[1] for direction(D)
     output logic signed [0:2][31:0] o_normal,
@@ -107,20 +109,10 @@ module pl_intersection #(
 );
 
     /*
-    T1 = i_triangle[1] - i_triangle[0]
-    T2 = i_triangle[2] - i_triangle[0]
-
-    |T1[0], T2[0], -D[0]|   |a|
-    |T1[1], T2[1], -D[1]| x |b| = E - i_triangle[0]
-    |T1[2], T2[2], -D[2]|   |t|
-
-    coef = det(T1, T2, E - i_triangle[0])
-    a = det(E - i_triangle[0], T2, -D)/coef
-    b = det(T1, E - i_triangle[0], -D)/coef
-    t = det(T1, T2, -D)/coef
-
-    check: coef != 0, a >= 0, b >= 0, a + b <= 1, t >= min_t
-    normal: T1 x T2 (normalized)
+    procedure of intersection:
+    sub -> cross (-> normal)
+        -> det -> add
+               -> div
     */
 
     // preprocess
@@ -190,7 +182,8 @@ module dummy_intersection #(
     parameter signed min_t = 0
 ) (
     input i_clk,
-    inout rst,
+    inout i_rstn,
+    input i_en,
     input signed [0:2][0:2][31:0] i_triangle, // i_triangle[0] for vertex 0
     input signed [0:1][0:2][31:0] i_ray, // i_ray[0] for origin(E), i_ray[1] for direction(D)
     output logic signed [0:2][31:0] o_normal,

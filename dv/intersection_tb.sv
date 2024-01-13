@@ -7,8 +7,11 @@ module intersection_tb();
     logic signed [0:2][31:0] ref_normal;
     logic o_invalid, ref_invalid; // overflow, e.g. div by 0
     logic o_result, ref_result;
-    
+
     intersection #(.min_t(min_t)) intersection_inst (
+        .i_clk(1'b0),
+        .i_rstn(1'b1),
+        .i_en(1'b1),
         .i_triangle(i_triangle),
         .i_ray(i_ray),
         .o_normal(o_normal),
