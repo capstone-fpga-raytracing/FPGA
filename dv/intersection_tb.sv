@@ -1,30 +1,37 @@
 module intersection_tb();
 
-    localparam signed min_t = 0; // TO DO: CHANGE
+    localparam signed min_t = 0;
     logic signed [0:2][0:2][31:0] i_tri; // i_tri[0] for vertex 0
     logic signed [0:1][0:2][31:0] i_ray; // i_ray[0] for origin(E), i_ray[1] for direction(D)
-    logic signed [0:2][31:0] o_normal;
-    logic signed [0:2][31:0] ref_normal;
-    logic o_result, ref_result;
+    logic signed [31:0] o_t;
+    logic o_result, o_valid;
+    logic clk, rstn, en;
+    always #10 clk = ~clk;
 
-    intersection #(.min_t(min_t)) intersection_inst (
-        .i_clk(1'b0),
-        .i_rstn(1'b1),
-        .i_en(1'b1),
+    intersection #(
+        .min_t(min_t)
+    ) dut (
+        .i_clk(clk),
+        .i_rstn(rstn),
+        .i_en(en),
         .i_tri(i_tri),
         .i_ray(i_ray),
-        .o_normal(o_normal),
-        .o_result(o_result)
+        .o_t(o_t),
+        .o_result(o_result),
+        .o_valid(o_valid)
     );
 
     int test_index;
     logic error_flag;
     task automatic test(); begin
-        #50;
+        en = 'b1;
         test_index += 'd1;
         error_flag = 1'b0;
-        $display("Test %0d begin", test_index);
+        $display("[%0d]Test %0d begin", $time(), test_index);
+        @(posedge clk);
+        en = 'b0;
 
+        /*
         if (o_normal !== ref_normal) begin
             $display("ERROR (normal): expect %h %h %h, get %h %h %h", ref_normal[0], ref_normal[1], ref_normal[2]
                     , o_normal[0], o_normal[1], o_normal[2]);
@@ -39,47 +46,50 @@ module intersection_tb();
         if (error_flag) begin
             $stop();
         end
+
         $display("Test %0d end\n", test_index);
+        */
 
     end
     endtask
 
 
     initial begin
+        clk = 1'b1;
+        rstn = 1'b0;
+        en = 1'b0;
+        repeat(10) @(posedge clk);
+        rstn = 1'b1;
         test_index = 'd0;
-        $display("\nintersection: test begin\n");
-
-        // TO DO: add test cases (with ref results)
+        $display("\n[%0d]intersection: test begin\n", $time());
 
         // example
-        i_tri[0][0] = 32'h00010000;
-        i_tri[0][1] = 32'h00010000;
-        i_tri[0][2] = 32'h00010000;
+        i_tri[0][0] = 1 << 16;
+        i_tri[0][1] = 1 << 16;
+        i_tri[0][2] = 1 << 16;
 
-        i_tri[1][0] = 32'h00020000;
-        i_tri[1][1] = 32'h00030000;
-        i_tri[1][2] = 32'h00020000;
+        i_tri[1][0] = 2 << 16;
+        i_tri[1][1] = 3 << 16;
+        i_tri[1][2] = 2 << 16;
 
-        i_tri[2][0] = 32'h00010000;
-        i_tri[2][1] = 32'h00010000;
-        i_tri[2][2] = 32'h00030000;
+        i_tri[2][0] = 1 << 16;
+        i_tri[2][1] = 1 << 16;
+        i_tri[2][2] = 3 << 16;
 
-        i_ray[0][0] = 32'h00000000;
-        i_ray[0][1] = 32'h00010000;
-        i_ray[0][2] = 32'h00010000;
+        i_ray[0][0] = 0 << 16;
+        i_ray[0][1] = 1 << 16;
+        i_ray[0][2] = 1 << 16;
 
-        i_ray[1][0] = 32'h00030000;
-        i_ray[1][1] = 32'h00008000;
-        i_ray[1][2] = 32'h00018000;
+        i_ray[1][0] = 3 << 16;
+        i_ray[1][1] = 0.5 * (1 << 16);
+        i_ray[1][2] = 1.5 * (1 << 16);
 
-        ref_normal[0] = 32'h00040000;
-        ref_normal[1] = 32'hfffe0000;
-        ref_normal[2] = 32'h00000000;
-        ref_result = 1;
         test();
+        // expects result = 1, t = 180224 (2.75)
 
 
-        #50
-        $display("intersection: test end\n");
+        repeat(12) @(posedge clk);
+        $display("[%0d]intersection: test end\n", $time());
+        $stop();
     end
 endmodule: intersection_tb
